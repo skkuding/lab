@@ -9,3 +9,6 @@ resources:
   - notifications-secret.yaml
   - notifications.yaml
   - clusters/lab.yaml
+
+  # add other repositories to sync
+  - repositories/skkuding-lab.yaml
