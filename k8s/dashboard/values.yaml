@@ -1,4 +1,5 @@
 app:
+  # use manual ingress as we are using traefik
   ingress:
     enabled: false
 
