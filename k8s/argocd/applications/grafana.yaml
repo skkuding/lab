@@ -8,23 +8,23 @@ metadata:
 spec:
   project: default
   sources:
-    # Source 1: Git의 values + Helm 차트
-    - repoURL: https://github.com/skkuding/lab
-      path: k8s/observability/grafana
+    - repoURL: https://grafana.github.io/helm-charts
+      chart: grafana
+      targetRevision: '10.4.3'
       helm:
-        releaseName: grafana
-        chart: grafana
-        version: '10.4.3'
-        repo: https://grafana.github.io/helm-charts
         valueFiles:
-          - values.yaml
+          - $lab/k8s/observability/grafana/values.yaml
+    - repoURL: https://github.com/skkuding/lab
+      targetRevision: main
+      ref: lab
     
-    # Source 2: 추가 리소스 (kustomization.yaml)
     - repoURL: https://github.com/skkuding/lab
       path: k8s/observability/grafana
+      directory:
+        recurse: false
     
   destination:
-    name: lab-cluster
+    name: lab
     namespace: observability
   syncPolicy:
     automated:
