@@ -12,7 +12,7 @@ spec:
     repoURL: https://github.com/skkuding/lab
     targetRevision: main
     directory:
-      recurse: false
+      recurse: true
   destination:
     namespace: argocd
     name: lab
