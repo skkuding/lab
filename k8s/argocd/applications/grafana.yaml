@@ -1,0 +1,34 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: grafana
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  sources:
+    # Source 1: Git의 values + Helm 차트
+    - repoURL: https://github.com/skkuding/lab
+      path: k8s/observability/grafana
+      helm:
+        releaseName: grafana
+        chart: grafana
+        version: '10.4.3'
+        repo: https://grafana.github.io/helm-charts
+        valueFiles:
+          - values.yaml
+    
+    # Source 2: 추가 리소스 (kustomization.yaml)
+    - repoURL: https://github.com/skkuding/lab
+      path: k8s/observability/grafana
+    
+  destination:
+    name: lab-cluster
+    namespace: observability
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
