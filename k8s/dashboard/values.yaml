@@ -1,7 +1,4 @@
 app:
-  settings:
-    global:
-      defaultNamespace: proseed
   ingress:
     enabled: false
 
