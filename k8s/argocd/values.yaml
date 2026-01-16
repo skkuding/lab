@@ -120,6 +120,8 @@ controller:
     enabled: true
     serviceMonitor:
       enabled: true
+      additionalLabels:
+        release: prometheus
 
 ## Dex
 dex:
@@ -132,6 +134,8 @@ dex:
     enabled: true
     serviceMonitor:
       enabled: true
+      additionalLabels:
+        release: prometheus
 
 ## Server
 server:
@@ -148,8 +152,8 @@ server:
     enabled: true
     serviceMonitor:
       enabled: true
-      selector:
-        prometheus: kube-prometheus
+      additionalLabels:
+        release: prometheus
 
   # Argo CD server ingress configuration
   ingress:
@@ -174,8 +178,8 @@ repoServer:
     enabled: true
     serviceMonitor:
       enabled: true
-      selector:
-        prometheus: kube-prometheus
+      additionalLabels:
+        release: prometheus
 
 ## ApplicationSet controller
 applicationSet:
@@ -185,8 +189,8 @@ applicationSet:
     enabled: true
     serviceMonitor:
       enabled: true
-      selector:
-        prometheus: kube-prometheus
+      additionalLabels:
+        release: prometheus
 
 ## Notifications controller
 notifications:
@@ -195,8 +199,8 @@ notifications:
     enabled: true
     serviceMonitor:
       enabled: true
-      selector:
-        prometheus: kube-prometheus
+      additionalLabels:
+        release: prometheus
 
   service.github: |
     appID: $github-app-id
