@@ -28,10 +28,18 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: observability
+  ignoreDifferences:
+    # Operator manages these resources - ignore status changes
+    - group: opentelemetry.io
+      kind: OpenTelemetryCollector
+      jsonPointers:
+        - /status
+        - /spec/configVersions
   syncPolicy:
     automated:
       prune: true
-      selfHeal: true
+      selfHeal: false
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
+      - RespectIgnoreDifferences=true
