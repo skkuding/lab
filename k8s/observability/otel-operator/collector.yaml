@@ -3,6 +3,9 @@ kind: OpenTelemetryCollector
 metadata:
   name: otel-collector
   namespace: observability
+  annotations:
+    # Operator manages child resources - ArgoCD should not prune them
+    argocd.argoproj.io/sync-options: Prune=false
 spec:
   mode: deployment
   replicas: 1
