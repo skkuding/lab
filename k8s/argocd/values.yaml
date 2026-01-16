@@ -1,0 +1,265 @@
+## Argo CD configuration
+## Ref: https://github.com/argoproj/argo-cd
+
+global:
+  domain: argocd.lab.skkuding.dev
+  revisionHistoryLimit: 3
+  logging:
+    format: json
+    level: info
+
+configs:
+  cm:
+    dex.config: |
+      connectors:
+        - type: github
+          id: github
+          name: GitHub
+          config:
+            clientID: $clientID
+            clientSecret: $clientSecret
+            orgs:
+            - name: skkuding
+  clusterCredentials:
+    lab:
+      server: $cluster-lab.server
+      config: $cluster-lab.config
+  repositories:
+    lab:
+      url: https://github.com/skkuding/lab
+      name: lab
+      type: git
+
+extraObjects:
+  # Cluster - Lab
+  - apiVersion: bitnami.com/v1alpha1
+    kind: SealedSecret
+    metadata:
+      name: cluster-lab
+      namespace: argocd
+    spec:
+      encryptedData:
+        config: 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
+        name: AgB5BbeqoH3pw8IsZn9vn1dFKFsT3w/AJfA7mUFaZOdsTbZ/cqKSwDYY/3/PCtdRgY5/8ZL2JZxsC1WZLWJfam28IYrlDWaGZj8SnA48RscB+ELvdR4+v8K+NetQ5QJ3Z4Ez1NiFs/OqHc/sRpAoaHIf+yE2z7gASpOBwX88XCKZ/1SsLwGAbwisSeyRcs3K8Q/n7UpmnVo/hxqau7xQW5Q0qVKSg5Lp7CGW1QDacpgUe5SasNB2NnNr91/kIRcI1N7WGIjIGtRQ4YMuCMgkYKEqq8LgNzyBaYAgJQqgoak+qc5QMfs0JyI4liM31arF+QzHze1LfYqAT41WG1TT+2AvXhJ1rYgTkXh6PO/Nqci+poXcXyM4GXYumrD5twJdBezTqfu1jnsoPumevPJCrdEnvJmKFfEFsZvr/+tBNWePVpuqR6wU5ltD4a4nxAJrojO0SLwUjlDBFpCe3wzqqPrzallGapl3ehc97eqHEdQC2uTlyzt2t9NS0uV9AFOo7EHZOyW4/pRkqJCnv3j9sTxDej0/vbu+WvT7JyZXbayhzG8NlVy+4gqxQSPAT00JN+xiwqMRQ/3oK6UGYyyMnjp2FLqECKRewq1Fz+EIsf/VpKrIVCTy0hMR9Emw2frxgkMyNiuyxGKeepi9lkSBriaTM0Qrt4A9Zdeucm/R8kX0mnZGw7d5Z3jZyM/HgFgK+I1JKlc=
+        server: AgBFXQD6wWEnr8OwFJLByE6GbPciY/gQtNMLvRUiskAGhCFdhc+Ltpc4FPs0XqVjlftB0o53m5/ys4MEWJ90ZYmVoikt9eHDDsicBv3siifE1tZXKBD7VJYrjImApxrshhDC7QQ3sLXJ6Anv6i9CeJsOmFmo4EKV5t6+RLoQybkYbTWcEpNlU2jwGeaYRbPG6OM6GM9saUYwghP326qaYuG+uF7+vodzKoHWUCCX5dnKD2uqPLvZWto88pIhftMAWvy2yCLDyHtMZ2/VRmNmi6MWzU5W8JSYDQAjb0rThtli71H1Z9EfhqmlDr16NIQOmRyhMfKuiVxArXjeg5MzLm2OiCH0tSRlPvyYLFPMGIz1FH+O7mARYDWBmsAmuXpvLEtacmZMUw7hJH+S+FHWYErvS1aNIoEUDkFqkqcHCyxqobeIeeZbcvTkMS6hRQZGKjsAePr3pFKRhLGw4mSxl6xU7+li2RIT4VXQ9naMJSLWy5jwJzQpWlw7CEfDPX4PGQLgsOUkW7Uis+HnWU+CnL4UhUQhlVUl/lE8keeeknMw18uluVG4Cn8GkUInMXxas9HkuvXqc3vlvu+cijpXhEM/eKpNERSpTaslF34lNvpqHsie15qkp5pyt9cDfXd1eRdNf+fnWqPd2sUlT95j0sW2tClsfHK73LvGQmcBbs/SS7jL4YsUesKsOQ4bNX/vSqu48wIoOwtLfDIlSOjvqXj90zClfVbWdRfhLvwz
+      template:
+        metadata:
+          labels:
+            argocd.argoproj.io/secret-type: cluster
+          name: cluster-lab
+          namespace: argocd
+        type: Opaque
+  # GitHub App: skkuding-bot
+  - apiVersion: bitnami.com/v1alpha1
+    kind: SealedSecret
+    metadata:
+      name: github-app-secret
+      namespace: argocd
+    spec:
+      encryptedData:
+        githubAppID: AgC4EMnLCUCB575DN1IoCbAtJ06wZwSOEtGEkVSLz1wDSNsD4Z60TJrAgtWAjsWxhgdzeoQM5ZvxTVyJ0aYqZVzpeuz/Aw4zg0DLdNpZ7JLtjIPLL/FzmkJX3f401onRS+U7FpYU+zK7uNNot1CDcZBlyHRoU7SQCYJdfJRryVkpBBNobEfvLav+P421vfcSqvxRu6EC8Ew2ZqgPrjAlM77dO2TcpZ41kM1UggzMnvBrr/XPcR/ImOD+uEFEIphs6yaiuobXV9s0Wr03REgjFV5PtpRlIMFQPnlO1Ho1mI5mPkcngTYrmduUhgpVf0oOaRYDIoDwPMBsSyjR6o7rE/rA9xP6auLNb0WTqhsrY/+SfVU6X4iZJZ4HgiQue2+BDiZWfUrVKgiDGTd1VQCdwXUGsWjCJXDOtB2epPqdPJucBEtWOHtyrHHZ9I/0fb0V588yQAZZqWfn/BadjIhbWEuh3w9NGISyOC4I2H3ypGNZuR3p+uUJJ1E0I8b/kyVqs3ujQKeFa7e9DoDysfkEdpQPRMZweGd0c1RXOjKWzwpZmbJNEADwqBVPvy2JSElik4F+FwX+0Y4dvr7zuSgZcZbE8pv21Pe+Tq8DmneKT4vojfX2O/tWc30YWaQkhqFnD3ut0U5qShOn3Bf8UgOgWGEp609jHTG8DbxYZDJpOCBIU3ulvdtQS3B6F+BqeTTs182yhDurXTgB
+        githubAppInstallationID: AgAZb5KhX06GDf1/UcmxfpwUVKFiUp+P8MshwM26URpV3of9Xa62RhoIu7r61ytN6HFWdT2qtF2PNnAFaNksO3UBX49eLFPM8bzvOY7C/TrgGMAvsV3aVrVvXuVkmDadw+8Rk8mPiHdJRigJ8Ej1M1rPP4kbk3YOG+s8s2SuEGZdQbFyp1FmCPQ/G3Dq9foNcMYPlvtyxn/5ZszHS29wOkEB2L1rmj4evMatOTurhDQ/8ZLEeRzFyTQaEExAbpr8byPueJJjxstsu20M4PlqX2v3I3UeSpra11ETMQg5KTsWZbijWcr0bnMvOGw0tTQeIWIcAhkbZs1gc946vueJU6yXzPMcXAhwCwgbVGtRoum2nTiA08KbwZhDvZXS8x2q19ztlUG3kFlhaYsH6yGdLi1WasqpksaoZlu6Zk/BzhEpOM88nnngFiIqELzkJVY3qPzefSCMGlMAKgaIDzuV+/T5OzCsDwU7j/bScJU2UEwWu+UTYWFuvBor2UA2rxN3i+3BpVIHESaCpL+b+2QJN87GNfTjS0nP0ZRF+ESf2hu0Z9OVUDqUm3hB9lnwhJ8hzIcAxeFmt0a2M90/QGx8JfsyTzGaAEZJUELr7JctcP2Xnhx5BTBPcFAC6IFGXsYjcXi0NTze/zNGmbDRw30pDvhDNVvcbCaNMHQS8tq0VWNIErIIfI6ifJ3VxFsXg8IiazoNYy01zAy1UA==
+        githubAppPrivateKey: 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
+      template:
+        metadata:
+          name: github-app-secret
+          namespace: argocd
+        type: Opaque
+  # Argo CD - Lab (https://github.com/organizations/skkuding/settings/applications)
+  - apiVersion: bitnami.com/v1alpha1
+    kind: SealedSecret
+    metadata:
+      name: skkuding-github-oauth-app
+      namespace: argocd
+    spec:
+      encryptedData:
+        clientID: AgAcLKnQHUEIvwbr/oAOGp1cQJdMOANtXDSS1BO2cyf6RUa8Uzh0fOtD4Rpa6pN1DwDa2PPz7WiaQa6VN2ubmRbVXoEJcDT6WoPySgnUS4bwFKLW+MGzAnNy1ufcL0t4kAuveBNFNlQDHxN3KvOc1t4jcvBvc1ycRUQcexTSUUuPh+nINIDuoC8ib0ZSm4h3//ZHvAQtrmuRCE+QXhAYp/gjm2LhWnajQ7tuQ30IKiIPvQGcQUFs2i+YZb1rcw9u2CPUFZXHdJl3QtwCjW6hwB7PdRpABD+UVOK5NGyb4F18RPqZvUhVchl9vZolxlMLJ/tCj0hfTT5HOdMpV5e4U9iL5Lvr+DBR65SagAZBmX+F3uYM7mol7rRCiTfO0JtDn7srsJldd1AnjhMjwcfeqZHaHVidH6K8AI+hj9V91Olc2+OQD1mS9lcorebqQsxJV6SPM783cmtTb+1P1CiTkmrCS6kZZ2c+NrqzUkTnzm9cDgYqT7oaIQyU+RlbZD0cHlyB8TTERE/9nQs7aOm7RvTiNY4N2I5/oz1lXUsFXuraeD7ZewTYxg9Zh7wbTXVbCFeTyeu+yhUt1ley0Qgk1aVY0fDtuzEMoXKbn7AQ0gHerVuChLeJld9rZTp4SuBCU50bFqxnlRSOR3nhqpbXl3Q/T0x5GBvS2mpfpEU7zoNyf+o8RoI/Hqfdn+IEOnww0dkCXCSqHp/nnLf0RmtDDtBp2dLHHg==
+        clientSecret: AgAGCBUsfjY+9vK9vFAOZXanJnC1GWeNFWRYEHjkNJzT8G0PjwKDAsa3NEUzkaJYytBVgW/SvDd6l9t7qXWeglZTel+eC/kpVKfnz78+4X242NpSNxV+7l+il9hGvsLGSelpUdzhBp4Lx/trcQ1tSAuYCLkvexSol4ECiXME7sxrExs114qD7LSwYn7DlKWiGDf5Jk5Rbgt5xQuYKaFMIpyQGP28vZxd5Pgpl8X1r2o/sRSTfoToxtSmONNbJ+p7hFunmSPpZ3JSANf0TFkEa+B0v86MwW7t1dtX8OVbOlBG4hd+/GRfpYnZ69Vj7WprPA/cJ/p334d3506TmJML6r4drBt5yaw31pEl7oy8jFVSyLUd1fxERQ1EbbWx+R513MoXz4XODqS2FhjS/bZXJVLq9c2TlaMmnYmwzL7E7oOellqwjeY1Y/bGiYEMLug64Qz+iYe1rrgwoPPONOr/Il1m19+atUmEky3AdfQcb96rJnhs1yMNrbEIuD5YEaNNOlebl6RCxzxrb80bFbTesZdY3DfcylA4m6XrDjwDKihNXGZm/7/mbt85zcnMWksvCYEewly/69MNICwU8hDMnxeZIlLnuScOoEdrIMFkEJMKhsYHjz5RDDDRuG1+V5uWA05Y8CtdLLCi6wnRMHRRHouvXhC9I1whEiXBslu20V/GdHokEeRWdrKpMwYPk3dbmJ2H/GR8cSZOq+aDKyK0nveaX/HBEm7MFMTYLOwXDaUasxcl4a0X7G6p
+      template:
+        metadata:
+          name: skkuding-github-oauth-app
+          namespace: argocd
+  # AppProject - ProSeed
+  # ProSeed 관련 리소스의 ArgoCD Application/ApplicationSet에
+  # 반드시 spec.project: proseed 로 설정해야 합니다.
+  - apiVersion: argoproj.io/v1alpha1
+    kind: AppProject
+    metadata:
+      name: proseed
+      namespace: argocd
+    spec:
+      description: "ProSeed team project"
+      sourceRepos:
+        - 'https://github.com/skkuding/proseed'
+        - 'https://github.com/skkuding/proseed.git'
+      destinations:
+        - namespace: 'proseed-*'
+          server: https://kubernetes.default.svc
+        - namespace: 'proseed'
+          server: https://kubernetes.default.svc
+      clusterResourceWhitelist: []
+      namespaceResourceWhitelist:
+        - group: '*'
+          kind: '*'
+
+
+## Application controller
+controller:
+  name: application-controller
+  replicas: 1
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+
+## Dex
+dex:
+  enabled: true
+  name: dex-server
+  envFrom:
+    - secretRef:
+        name: skkuding-github-oauth-app
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+
+## Server
+server:
+  name: server
+  replicas: 1
+
+  service:
+    servicePortHttps: 80
+    servicePortHttp: 80
+
+  ## Server metrics service configuration
+  metrics:
+    # -- Deploy metrics service
+    enabled: true
+    serviceMonitor:
+      enabled: true
+      selector:
+        prometheus: kube-prometheus
+
+  # Argo CD server ingress configuration
+  ingress:
+    enabled: true
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-dns01
+      traefik.ingress.kubernetes.io/redirect-entry-point: https
+    ingressClassName: traefik
+    hostname: argocd.lab.skkuding.dev
+    tls: true
+    certificateName: argocd-server-tls
+    servicePort: 80
+  
+  extraArgs:
+    - --insecure
+
+## Repo Server
+repoServer:
+  name: repo-server
+  replicas: 1
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+      selector:
+        prometheus: kube-prometheus
+
+## ApplicationSet controller
+applicationSet:
+  name: applicationset-controller
+  replicas: 1
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+      selector:
+        prometheus: kube-prometheus
+
+## Notifications controller
+notifications:
+  enabled: true
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+      selector:
+        prometheus: kube-prometheus
+
+  service.github: |
+    appID: $github-app-id
+    installationID: $github-installation-id
+    privateKey: $github-private-key
+
+  # -- The notification template is used to generate the notification content
+  ## For more information: https://argo-cd.readthedocs.io/en/stable/operator-manual/notifications/templates/
+  templates:
+    template.github-running: |
+      message: 'Syncing {{ .app.metadata.name }}'
+      github:
+        status:
+          state: pending
+          label: "Argo CD / {{ .app.metadata.annotations.appName }}"
+          targetURL: "{{ .context.argocdUrl }}/applications/{{ .app.metadata.name }}?operation=true"
+
+    template.github-succeed: |
+      message: 'Successfully synced {{ .app.metadata.name }}'
+      github:
+        status:
+          state: success
+          label: "Argo CD / {{ .app.metadata.annotations.appName }}"
+          targetURL: "{{ .context.argocdUrl }}/applications/{{ .app.metadata.name }}?operation=true"
+        pullRequestComment:
+          content: |
+            ✅ **Syncing Preview App Succeeded**
+
+            **Application:** `{{ .app.metadata.annotations.appName }}`
+            **Revision:** `{{ .app.status.sync.revision }}`
+            **Health Status:** {{ .app.status.health.status }}
+
+            [Open Preview]({{ .app.metadata.annotations.previewURL }}) | [View in Argo CD]({{ .context.argocdUrl }}/applications/{{ .app.metadata.name }})
+
+    template.github-failed: |
+      message: 'Failed to sync {{ .app.metadata.name }}'
+      github:
+        status:
+          state: failure
+          label: "Argo CD / {{ .app.metadata.annotations.appName }}"
+          targetURL: "{{ .context.argocdUrl }}/applications/{{ .app.metadata.name }}?operation=true"
+        pullRequestComment:
+          content: |
+            ❗ **Syncing Preview App Failed**
+
+            **Application:** `{{ .app.metadata.annotations.appName }}`
+            **Revision:** `{{ .app.status.sync.revision }}`
+            **Health Status:** {{ .app.status.health.status }}
+
+            [Open Preview]({{ .app.metadata.annotations.previewURL }}) | [View in Argo CD]({{ .context.argocdUrl }}/applications/{{ .app.metadata.name }})
+
+
+  # -- The trigger defines the condition when the notification should be sent
+  ## For more information: https://argo-cd.readthedocs.io/en/stable/operator-manual/notifications/triggers/
+  triggers:
+    trigger.on-sync-failed: |
+      - when: app.status.sync.status != 'Synced'
+        oncePer: app.status.sync.revision
+        send: [github-failed]
+
+    trigger.on-sync-running: |
+      - when: app.status.sync.status == 'Syncing'
+        oncePer: app.status.sync.revision
+        send: [github-running]
+
+    trigger.on-sync-succeeded: |
+      - when: app.status.sync.status == 'Synced' and app.status.health.status == 'Progressing'
+        oncePer: app.status.operationState.syncResult.revision
+        send: [github-running]
+      - when: app.status.sync.status == 'Synced' and app.status.health.status == 'Healthy'
+        oncePer: app.status.operationState.syncResult.revision
+        send: [github-succeed]
+      - when: app.status.sync.status == 'Synced' and app.status.health.status == 'Degraded'
+        oncePer: app.status.operationState.syncResult.revision
+        send: [github-failed]

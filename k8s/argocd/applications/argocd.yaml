@@ -7,12 +7,20 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
-  source:
-    path: k8s/argocd
-    repoURL: https://github.com/skkuding/lab
-    targetRevision: main
-    directory:
-      recurse: true
+  sources:
+    # Source 1: Argo CD Helm Chart from official repo
+    - repoURL: https://argoproj.github.io/argo-helm
+      chart: argo-cd
+      targetRevision: 7.7.3
+      helm:
+        releaseName: argocd
+        valueFiles:
+          - $values/k8s/argocd/argocd.yaml
+    # Source 2: Values file from lab repo
+    - repoURL: https://github.com/skkuding/lab
+      targetRevision: main
+      ref: values
+
   destination:
     namespace: argocd
     name: lab
