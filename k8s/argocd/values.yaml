@@ -16,8 +16,8 @@ configs:
           id: github
           name: GitHub
           config:
-            clientID: $skkuding-github-oauth-app:clientID
-            clientSecret: $skkuding-github-oauth-app:clientSecret
+            clientID: $clientID
+            clientSecret: $clientSecret
             orgs:
             - name: skkuding
             loadAllGroups: true
