@@ -20,12 +20,6 @@ spec:
     - repoURL: https://github.com/skkuding/lab
       targetRevision: main
       ref: values
-    # Source 3: Other Applications (App of Apps)
-    - repoURL: https://github.com/skkuding/lab
-      targetRevision: main
-      path: k8s/argocd/applications
-      directory:
-        exclude: argocd.yaml
 
   destination:
     namespace: argocd

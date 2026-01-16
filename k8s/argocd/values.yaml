@@ -86,6 +86,30 @@ extraObjects:
       namespaceResourceWhitelist:
         - group: '*'
           kind: '*'
+  # App of Apps - 다른 Application들을 자동으로 배포
+  - apiVersion: argoproj.io/v1alpha1
+    kind: Application
+    metadata:
+      name: apps
+      namespace: argocd
+      finalizers:
+        - resources-finalizer.argocd.argoproj.io
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/skkuding/lab
+        targetRevision: main
+        path: k8s/argocd/applications
+        directory:
+          recurse: false
+          exclude: "{argocd.yaml,apps.yaml}"
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: argocd
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
 
 
 ## Application controller
