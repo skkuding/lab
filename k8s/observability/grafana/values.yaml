@@ -74,7 +74,52 @@ sidecar:
 #   hardware: 'hardware-metrics'
 #   submission: 'submission-detail'
 
-# TODO: add public dashboards from https://grafana.com/grafana/dashboards/
+# Provisioned dashboards from https://grafana.com/grafana/dashboards/
+dashboardProviders:
+  dashboardproviders.yaml:
+    apiVersion: 1
+    providers:
+      - name: 'grafana-dashboards'
+        orgId: 1
+        folder: 'Provisioned'
+        type: file
+        disableDeletion: false
+        editable: true
+        options:
+          path: /var/lib/grafana/dashboards/grafana-dashboards
+
+dashboards:
+  grafana-dashboards:
+    # ArgoCD - https://grafana.com/grafana/dashboards/14584
+    argocd:
+      gnetId: 14584
+      revision: 1
+      datasource: Prometheus
+    # Node Exporter Full - https://grafana.com/grafana/dashboards/1860
+    node-exporter:
+      gnetId: 1860
+      revision: 37
+      datasource: Prometheus
+    # Loki Stack - https://grafana.com/grafana/dashboards/14055
+    loki-stack:
+      gnetId: 14055
+      revision: 5
+      datasource:
+        - name: DS_PROMETHEUS
+          value: Prometheus
+        - name: DS_LOKI
+          value: Loki
+    # Kubernetes Cluster - https://grafana.com/grafana/dashboards/7249
+    k8s-cluster:
+      gnetId: 7249
+      revision: 1
+      datasource: Prometheus
+    # Kubernetes Pods - https://grafana.com/grafana/dashboards/6417
+    k8s-pods:
+      gnetId: 6417
+      revision: 1
+      datasource: Prometheus
+
 downloadDashboards:
   env: {}
 
