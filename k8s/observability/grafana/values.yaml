@@ -7,6 +7,10 @@ replicas: 1
 autoscaling:
   enabled: false
 
+# 기존 PVC 권한 문제로 인해 비활성화
+initChownData:
+  enabled: false
+
 ingress:
   enabled: true
   path: /
