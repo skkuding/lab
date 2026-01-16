@@ -24,7 +24,7 @@ spec:
         recurse: false
     
   destination:
-    name: lab
+    name: https://kubernetes.default.svc
     namespace: observability
   syncPolicy:
     automated:

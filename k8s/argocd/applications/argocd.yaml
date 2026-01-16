@@ -11,11 +11,11 @@ spec:
     # Source 1: Argo CD Helm Chart from official repo
     - repoURL: https://argoproj.github.io/argo-helm
       chart: argo-cd
-      targetRevision: 7.7.3
+      targetRevision: 9.3.4
       helm:
         releaseName: argocd
         valueFiles:
-          - $values/k8s/argocd/argocd.yaml
+          - $values/k8s/argocd/values.yaml
     # Source 2: Values file from lab repo
     - repoURL: https://github.com/skkuding/lab
       targetRevision: main
@@ -23,7 +23,7 @@ spec:
 
   destination:
     namespace: argocd
-    name: lab
+    server: https://kubernetes.default.svc
   syncPolicy:
     automated:
       prune: true
