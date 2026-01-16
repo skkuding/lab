@@ -72,12 +72,6 @@ sidecar:
     label: grafana_dashboard
     labelValue: '1'
 
-# TODO: provision dashboard config maps
-# dashboardsConfigMaps:
-#   default: 'all-service-logs'
-#   hardware: 'hardware-metrics'
-#   submission: 'submission-detail'
-
 # Provisioned dashboards from https://grafana.com/grafana/dashboards/
 dashboardProviders:
   dashboardproviders.yaml:
@@ -113,15 +107,10 @@ dashboards:
           value: Prometheus
         - name: DS_LOKI
           value: Loki
-    # Kubernetes Cluster - https://grafana.com/grafana/dashboards/7249
-    k8s-cluster:
-      gnetId: 7249
-      revision: 1
-      datasource: Prometheus
-    # Kubernetes Pods - https://grafana.com/grafana/dashboards/6417
-    k8s-pods:
-      gnetId: 6417
-      revision: 1
+    # Kubernetes Dashboard - https://grafana.com/grafana/dashboards/15661
+    k8s-dashboard:
+      gnetId: 15661
+      revision: 2
       datasource: Prometheus
 
 downloadDashboards:
