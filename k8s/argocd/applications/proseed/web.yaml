@@ -11,8 +11,7 @@ spec:
     - repoURL: https://github.com/skkuding/proseed
       targetRevision: main
       path: infra/k8s/web
-      directory:
-        recurse: false
+      kustomize: {}
   destination:
     server: https://kubernetes.default.svc
     namespace: proseed
