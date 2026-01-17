@@ -107,11 +107,13 @@ dashboards:
           value: Prometheus
         - name: DS_LOKI
           value: Loki
-    # Kubernetes Dashboard - https://grafana.com/grafana/dashboards/15661
+    # Kubernetes Cluster Overview - https://grafana.com/grafana/dashboards/15661
     k8s-dashboard:
       gnetId: 15661
       revision: 2
-      datasource: Prometheus
+      datasource:
+        - name: DS_VICTORIAMETRICS-PROD-ALL
+          value: Prometheus
 
 downloadDashboards:
   env: {}
