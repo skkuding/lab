@@ -1,0 +1,51 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: proseed-web-preview
+  namespace: argocd
+spec:
+  generators:
+    - pullRequest:
+        github:
+          owner: skkuding
+          repo: proseed
+        requeueAfterSeconds: 30
+  template:
+    metadata:
+      name: "proseed-web-pr-{{number}}"
+      namespace: argocd
+      finalizers:
+        - resources-finalizer.argocd.argoproj.io
+    spec:
+      project: default
+      sources:
+        - repoURL: https://github.com/skkuding/proseed
+          targetRevision: "{{head_sha}}"
+          path: infra/k8s/web
+          kustomize:
+            images:
+              - "ghcr.io/skkuding/proseed/web:pr-{{number}}"
+            patches:
+              - target:
+                  kind: Ingress
+                  name: web
+                patch: |
+                  - op: replace
+                    path: /spec/rules/0/host
+                    value: "pr-{{number}}.preview.proseednow.com"
+                  - op: replace
+                    path: /spec/tls/0/hosts/0
+                    value: "pr-{{number}}.preview.proseednow.com"
+                  - op: replace
+                    path: /spec/tls/0/secretName
+                    value: "wildcard-preview-proseednow-tls"
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: "proseed-preview-{{number}}"
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+          - ServerSideApply=true
