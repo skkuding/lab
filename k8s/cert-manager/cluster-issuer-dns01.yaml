@@ -1,5 +1,3 @@
-# For domain-specific TLS certificates, use http01 challenge instead.
-# This ClusterIssuer uses DNS-01 challenge, for special use-cases like wildcard certificates.
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
@@ -11,7 +9,10 @@ spec:
     privateKeySecretRef:
       name: letsencrypt-dns01
     solvers:
-      - dns01:
+      - selector:
+          dnsZones:
+            - "skkuding.dev"
+        dns01:
           route53:
             region: ap-northeast-2
             accessKeyIDSecretRef:
@@ -19,4 +20,16 @@ spec:
               key: aws_access_key_id
             secretAccessKeySecretRef:
               name: route53-credentials
+              key: aws_secret_access_key
+      - selector:
+          dnsZones:
+            - "proseednow.com"
+        dns01:
+          route53:
+            region: ap-northeast-2
+            accessKeyIDSecretRef:
+              name: proseed-route53-credentials
+              key: aws_access_key_id
+            secretAccessKeySecretRef:
+              name: proseed-route53-credentials
               key: aws_secret_access_key
