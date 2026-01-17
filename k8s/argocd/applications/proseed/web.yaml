@@ -10,9 +10,9 @@ spec:
   sources:
     - repoURL: https://github.com/skkuding/proseed
       targetRevision: main
-      path: infra/k8s
+      path: infra/k8s/web
       directory:
-        recurse: true
+        recurse: false
   destination:
     server: https://kubernetes.default.svc
     namespace: proseed
