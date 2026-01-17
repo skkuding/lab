@@ -3,5 +3,4 @@ kind: Kustomization
 
 resources:
   - cluster-issuer-dns01.yaml
-  - namespace.yaml
   - route53-credentials.yaml
