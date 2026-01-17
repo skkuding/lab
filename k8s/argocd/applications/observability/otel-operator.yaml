@@ -29,12 +29,35 @@ spec:
     server: https://kubernetes.default.svc
     namespace: observability
   ignoreDifferences:
-    # Operator manages these resources - ignore status changes
+    # Operator manages OpenTelemetryCollector CR - ignore status and configVersions
     - group: opentelemetry.io
       kind: OpenTelemetryCollector
       jsonPointers:
         - /status
         - /spec/configVersions
+    # Operator manages child Deployment - ignore all changes
+    - group: apps
+      kind: Deployment
+      name: otel-collector-collector
+      jsonPointers:
+        - /spec
+        - /metadata/annotations
+    # Operator manages child Services
+    - group: ""
+      kind: Service
+      name: otel-collector-collector
+      jsonPointers:
+        - /spec
+    - group: ""
+      kind: Service
+      name: otel-collector-collector-headless
+      jsonPointers:
+        - /spec
+    - group: ""
+      kind: Service
+      name: otel-collector-collector-monitoring
+      jsonPointers:
+        - /spec
   syncPolicy:
     automated:
       prune: true
