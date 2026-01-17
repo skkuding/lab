@@ -15,12 +15,31 @@ ports:
     servicePort: 4317
     protocol: TCP
   otlp-http:
-    enabled: false
+    enabled: true
+    containerPort: 4318
+    servicePort: 4318
+    protocol: TCP
   metrics:
     enabled: true
     containerPort: 8889
     servicePort: 8889
     protocol: TCP
+
+ingress:
+  enabled: true
+  ingressClassName: traefik
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-dns01
+  hosts:
+    - host: otel.proseednow.com
+      paths:
+        - path: /
+          pathType: Prefix
+          port: 4318
+  tls:
+    - secretName: otel-collector-tls
+      hosts:
+        - otel.proseednow.com
 
 config:
   receivers:
@@ -28,6 +47,11 @@ config:
       protocols:
         grpc:
           endpoint: 0.0.0.0:4317
+        http:
+          endpoint: 0.0.0.0:4318
+          cors:
+            allowed_origins:
+              - "*"
 
   processors:
     batch:
