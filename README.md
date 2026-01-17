@@ -18,6 +18,18 @@
 - [ProSeed](https://github.com/skkuding/proseed)
 - to be continued...
 
+## 앱 추가 방법
+
+1. 별도의 레포지토리 생성
+   - 프로젝트별로 독립된 레포지토리를 생성합니다.
+   - 예: ProSeed 프로젝트의 경우 `skkuding/proseed` 레포지토리 생성
+2. 쿠버네티스 매니페스트 작성
+   - 앱 배포를 위한 쿠버네티스 매니페스트 파일을 위에서 생성한 레포지토리에 작성합니다.
+   - 매니페스트 파일은 Helm 차트, Kustomize, 또는 순수 YAML 파일 형식으로 작성할 수 있습니다.
+3. Argo CD 애플리케이션 생성
+   - Argo CD가 관리하는 애플리케이션 디렉토리(`k8s/argocd/applications`)에 새 애플리케이션 매니페스트 파일(`kind: Application`)을 생성합니다.
+   - Argo CD 애플리케이션은 앱의 레포지토리와 매니페스트 경로를 참조하도록 설정합니다.
+
 ## 규칙과 컨벤션
 
 ### 네임스페이스 관리
