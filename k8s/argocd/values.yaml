@@ -77,6 +77,8 @@ extraObjects:
       sourceRepos:
         - 'https://github.com/skkuding/proseed'
         - 'https://github.com/skkuding/proseed.git'
+        - 'https://github.com/skkuding/lab'
+        - 'https://github.com/skkuding/lab.git'
       destinations:
         - namespace: 'proseed-*'
           server: https://kubernetes.default.svc
