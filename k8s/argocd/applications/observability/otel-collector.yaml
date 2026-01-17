@@ -18,6 +18,11 @@ spec:
     - repoURL: https://github.com/skkuding/lab
       targetRevision: main
       ref: lab
+    - repoURL: https://github.com/skkuding/lab
+      targetRevision: main
+      path: k8s/observability/otel-collector
+      directory:
+        include: "{service-monitor.yaml}"
   destination:
     server: https://kubernetes.default.svc
     namespace: observability

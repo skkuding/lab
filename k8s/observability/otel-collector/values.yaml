@@ -3,21 +3,6 @@
 
 mode: deployment
 
-extraObjects:
-  - apiVersion: monitoring.coreos.com/v1
-    kind: ServiceMonitor
-    metadata:
-      name: otel-collector
-      labels:
-        release: prometheus
-    spec:
-      selector:
-        matchLabels:
-          app.kubernetes.io/name: opentelemetry-collector
-      endpoints:
-        - port: metrics
-          interval: 30s
-
 replicaCount: 1
 
 image:
