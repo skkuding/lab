@@ -9,6 +9,7 @@ metadata:
 spec:
   mode: deployment
   replicas: 1
+  upgradeStrategy: none
   ports:
     - name: metrics
       port: 8889
