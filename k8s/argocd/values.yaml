@@ -101,7 +101,7 @@ extraObjects:
         targetRevision: main
         path: k8s/argocd/applications
         directory:
-          recurse: false
+          recurse: true
           exclude: "{argocd.yaml,apps.yaml}"
       destination:
         server: https://kubernetes.default.svc
