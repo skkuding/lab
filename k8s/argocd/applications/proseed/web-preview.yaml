@@ -21,24 +21,19 @@ spec:
       sources:
         - repoURL: https://github.com/skkuding/proseed
           targetRevision: "{{head_sha}}"
-          path: infra/k8s/web
+          path: infra/k8s/web-preview
           kustomize:
+            namespace: "proseed-preview-{{number}}"
             images:
               - "ghcr.io/skkuding/proseed/web:pr-{{number}}"
             patches:
               - target:
                   kind: Ingress
-                  name: web
+                  name: web-preview-ingress
                 patch: |
                   - op: replace
                     path: /spec/rules/0/host
                     value: "pr-{{number}}.preview.proseednow.com"
-                  - op: replace
-                    path: /spec/tls/0/hosts/0
-                    value: "pr-{{number}}.preview.proseednow.com"
-                  - op: replace
-                    path: /spec/tls/0/secretName
-                    value: "wildcard-preview-proseednow-tls"
       destination:
         server: https://kubernetes.default.svc
         namespace: "proseed-preview-{{number}}"
