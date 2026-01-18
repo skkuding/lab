@@ -23,6 +23,9 @@ spec:
         notifications.argoproj.io/subscribe.on-sync-running.github: ""
         github.com/repoURL: "https://github.com/skkuding/proseed"
         github.com/pullRequestID: "{{number}}"
+        # ArgoCD Image Updater
+        argocd-image-updater.argoproj.io/image-list: "web=ghcr.io/skkuding/proseed/web:pr-{{number}}"
+        argocd-image-updater.argoproj.io/web.update-strategy: "digest"
       finalizers:
         - resources-finalizer.argocd.argoproj.io
     spec:
