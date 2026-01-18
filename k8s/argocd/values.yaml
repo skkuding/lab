@@ -204,10 +204,20 @@ notifications:
       additionalLabels:
         release: prometheus
 
-  service.github: |
-    appID: $github-app-id
-    installationID: $github-installation-id
-    privateKey: $github-private-key
+  secret:
+    create: false
+    name: github-app-secret
+
+  notificationsController:
+    extraEnvFrom:
+      - secretRef:
+          name: github-app-secret
+
+  cm:
+    service.github: |
+      appID: $githubAppID
+      installationID: $githubAppInstallationID
+      privateKey: $githubAppPrivateKey
 
   # -- The notification template is used to generate the notification content
   ## For more information: https://argo-cd.readthedocs.io/en/stable/operator-manual/notifications/templates/

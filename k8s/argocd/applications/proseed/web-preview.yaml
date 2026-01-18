@@ -14,6 +14,12 @@ spec:
     metadata:
       name: "proseed-web-pr-{{number}}"
       namespace: argocd
+      annotations:
+        appName: "proseed-web-pr-{{number}}"
+        previewURL: "https://pr-{{number}}.preview.proseednow.com"
+        notifications.argoproj.io/subscribe.on-sync-succeeded.github: ""
+        notifications.argoproj.io/subscribe.on-sync-failed.github: ""
+        notifications.argoproj.io/subscribe.on-sync-running.github: ""
       finalizers:
         - resources-finalizer.argocd.argoproj.io
     spec:
