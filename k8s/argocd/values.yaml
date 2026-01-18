@@ -208,12 +208,11 @@ notifications:
     create: false
     name: github-app-secret
 
-  notificationsController:
-    extraEnvFrom:
-      - secretRef:
-          name: github-app-secret
+  extraEnvFrom:
+    - secretRef:
+        name: github-app-secret
 
-  cm:
+  notifiers:
     service.github: |
       appID: $githubAppID
       installationID: $githubAppInstallationID
