@@ -224,6 +224,8 @@ notifications:
     template.github-running: |
       message: 'Syncing {{ .app.metadata.name }}'
       github:
+        repoURLPath: "{{ .app.spec.source.repoURL }}"
+        revisionPath: "{{ .app.status.sync.revision }}"
         status:
           state: pending
           label: "Argo CD / {{ .app.metadata.annotations.appName }}"
@@ -232,6 +234,8 @@ notifications:
     template.github-succeed: |
       message: 'Successfully synced {{ .app.metadata.name }}'
       github:
+        repoURLPath: "{{ .app.spec.source.repoURL }}"
+        revisionPath: "{{ .app.status.sync.revision }}"
         status:
           state: success
           label: "Argo CD / {{ .app.metadata.annotations.appName }}"
@@ -249,6 +253,8 @@ notifications:
     template.github-failed: |
       message: 'Failed to sync {{ .app.metadata.name }}'
       github:
+        repoURLPath: "{{ .app.spec.source.repoURL }}"
+        revisionPath: "{{ .app.status.sync.revision }}"
         status:
           state: failure
           label: "Argo CD / {{ .app.metadata.annotations.appName }}"
