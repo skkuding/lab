@@ -230,6 +230,12 @@ notifications:
           state: pending
           label: "Argo CD / {{ .app.metadata.annotations.appName }}"
           targetURL: "{{ .context.argocdUrl }}/applications/{{ .app.metadata.name }}?operation=true"
+        deployment:
+          state: pending
+          environment: "preview-pr-{{ .app.metadata.name | replace \"proseed-web-pr-\" \"\" }}"
+          environmentURL: "{{ .app.metadata.annotations.previewURL }}"
+          logURL: "{{ .context.argocdUrl }}/applications/{{ .app.metadata.name }}?operation=true"
+          transientEnvironment: true
 
     template.github-succeed: |
       message: 'Successfully synced {{ .app.metadata.name }}'
@@ -240,6 +246,12 @@ notifications:
           state: success
           label: "Argo CD / {{ .app.metadata.annotations.appName }}"
           targetURL: "{{ .context.argocdUrl }}/applications/{{ .app.metadata.name }}?operation=true"
+        deployment:
+          state: success
+          environment: "preview-pr-{{ .app.metadata.name | replace \"proseed-web-pr-\" \"\" }}"
+          environmentURL: "{{ .app.metadata.annotations.previewURL }}"
+          logURL: "{{ .context.argocdUrl }}/applications/{{ .app.metadata.name }}?operation=true"
+          transientEnvironment: true
         pullRequestComment:
           content: |
             ✅ **Syncing Preview App Succeeded**
@@ -259,6 +271,12 @@ notifications:
           state: failure
           label: "Argo CD / {{ .app.metadata.annotations.appName }}"
           targetURL: "{{ .context.argocdUrl }}/applications/{{ .app.metadata.name }}?operation=true"
+        deployment:
+          state: failure
+          environment: "preview-pr-{{ .app.metadata.name | replace \"proseed-web-pr-\" \"\" }}"
+          environmentURL: "{{ .app.metadata.annotations.previewURL }}"
+          logURL: "{{ .context.argocdUrl }}/applications/{{ .app.metadata.name }}?operation=true"
+          transientEnvironment: true
         pullRequestComment:
           content: |
             ❗ **Syncing Preview App Failed**
