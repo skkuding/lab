@@ -9,6 +9,7 @@ spec:
         github:
           owner: skkuding
           repo: proseed
+          appSecretName: github-app-secret
         requeueAfterSeconds: 30
   template:
     metadata:
