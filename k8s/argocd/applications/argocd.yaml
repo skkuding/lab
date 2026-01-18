@@ -11,7 +11,7 @@ spec:
     # Source 1: Argo CD Helm Chart from official repo
     - repoURL: https://argoproj.github.io/argo-helm
       chart: argo-cd
-      targetRevision: 9.3.4
+      targetRevision: 9.0.6
       helm:
         releaseName: argocd
         valueFiles:
