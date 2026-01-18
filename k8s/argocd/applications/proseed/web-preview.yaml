@@ -20,6 +20,8 @@ spec:
         notifications.argoproj.io/subscribe.on-sync-succeeded.github: ""
         notifications.argoproj.io/subscribe.on-sync-failed.github: ""
         notifications.argoproj.io/subscribe.on-sync-running.github: ""
+        github.com/repoURL: "https://github.com/skkuding/proseed"
+        github.com/pullRequestID: "{{number}}"
       finalizers:
         - resources-finalizer.argocd.argoproj.io
     spec:
