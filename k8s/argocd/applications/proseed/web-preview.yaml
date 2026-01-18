@@ -26,22 +26,22 @@ spec:
         - resources-finalizer.argocd.argoproj.io
     spec:
       project: default
-      sources:
-        - repoURL: https://github.com/skkuding/proseed
-          targetRevision: "{{head_sha}}"
-          path: infra/k8s/web-preview
-          kustomize:
-            namespace: "proseed-preview-{{number}}"
-            images:
-              - "ghcr.io/skkuding/proseed/web:pr-{{number}}"
-            patches:
-              - target:
-                  kind: Ingress
-                  name: web-preview-ingress
-                patch: |
-                  - op: replace
-                    path: /spec/rules/0/host
-                    value: "pr-{{number}}.preview.proseednow.com"
+      source:
+        repoURL: https://github.com/skkuding/proseed
+        targetRevision: "{{head_sha}}"
+        path: infra/k8s/web-preview
+        kustomize:
+          namespace: "proseed-preview-{{number}}"
+          images:
+            - "ghcr.io/skkuding/proseed/web:pr-{{number}}"
+          patches:
+            - target:
+                kind: Ingress
+                name: web-preview-ingress
+              patch: |
+                - op: replace
+                  path: /spec/rules/0/host
+                  value: "pr-{{number}}.preview.proseednow.com"
       destination:
         server: https://kubernetes.default.svc
         namespace: "proseed-preview-{{number}}"
