@@ -292,7 +292,7 @@ notifications:
   ## For more information: https://argo-cd.readthedocs.io/en/stable/operator-manual/notifications/triggers/
   triggers:
     trigger.on-sync-failed: |
-      - when: app.status.sync.status != 'Synced'
+      - when: app.status.operationState.phase in ['Error', 'Failed']
         oncePer: app.status.sync.revision
         send: [github-failed]
 
