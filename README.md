@@ -16,7 +16,48 @@
 ## 관리 중인 앱
 
 - [ProSeed](https://github.com/skkuding/proseed)
-- to be continued...
+
+## 디렉토리 구조
+
+```
+k8s/
+├── argocd/
+│   ├── applications/
+│   │   ├── infra/          # 인프라 컴포넌트
+│   │   ├── observability/  # 모니터링 스택
+│   │   └── proseed/        # 프로젝트별 앱
+│   └── values.yaml
+├── aws-credentials/        # AWS 자격증명 (SealedSecret)
+├── cert-manager/           # TLS 인증서 자동 발급
+├── external-secrets/       # AWS Secrets Manager 연동
+├── reflector/              # Secret 복제
+├── observability/          # Prometheus, Grafana, Loki, Tempo
+└── dashboard/              # Kubernetes Dashboard
+```
+
+## 인프라 컴포넌트
+
+| 컴포넌트 | 설명 | 문서 |
+|----------|------|------|
+| ArgoCD | GitOps CD | [README](k8s/argocd/README.md) |
+| ArgoCD Image Updater | 자동 이미지 업데이트 | - |
+| Cert Manager | Let's Encrypt 인증서 | [README](k8s/cert-manager/README.md) |
+| External Secrets | AWS Secrets Manager 동기화 | [README](k8s/external-secrets/README.md) |
+| Reflector | Secret/ConfigMap 복제 | [README](k8s/reflector/README.md) |
+| Sealed Secrets | Git에 암호화된 Secret 저장 | [README](k8s/aws-credentials/README.md) |
+
+## 모니터링 스택
+
+자세한 내용은 [README](k8s/observability/README.md)를 참고하세요.
+
+| 컴포넌트 | 용도 |
+|----------|------|
+| OpenTelemetry Collector | 텔레메트리 수집/분배 |
+| Prometheus | 메트릭 저장 |
+| Loki | 로그 저장 |
+| Tempo | 트레이스 저장 |
+| Promtail | 노드 로그 수집 |
+| Grafana | 대시보드 |
 
 ## 앱 추가 방법
 
