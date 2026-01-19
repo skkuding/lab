@@ -16,10 +16,10 @@ spec:
           route53:
             region: ap-northeast-2
             accessKeyIDSecretRef:
-              name: route53-credentials
+              name: skkuding-aws-credentials
               key: aws_access_key_id
             secretAccessKeySecretRef:
-              name: route53-credentials
+              name: skkuding-aws-credentials
               key: aws_secret_access_key
       - selector:
           dnsZones:
@@ -28,8 +28,8 @@ spec:
           route53:
             region: ap-northeast-2
             accessKeyIDSecretRef:
-              name: proseed-route53-credentials
+              name: proseed-aws-credentials
               key: aws_access_key_id
             secretAccessKeySecretRef:
-              name: proseed-route53-credentials
+              name: proseed-aws-credentials
               key: aws_secret_access_key
