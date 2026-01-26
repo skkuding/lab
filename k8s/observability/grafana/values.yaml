@@ -70,16 +70,16 @@ sidecar:
   dashboards:
     enabled: true
     label: grafana_dashboard
-    labelValue: '1'
+    labelValue: "1"
 
 # Provisioned dashboards from https://grafana.com/grafana/dashboards/
 dashboardProviders:
   dashboardproviders.yaml:
     apiVersion: 1
     providers:
-      - name: 'grafana-dashboards'
+      - name: "grafana-dashboards"
         orgId: 1
-        folder: 'Provisioned'
+        folder: "Provisioned"
         type: file
         disableDeletion: false
         editable: true
@@ -112,7 +112,7 @@ dashboards:
       gnetId: 15661
       revision: 2
       datasource:
-        - name: DS_VICTORIAMETRICS-PROD-ALL
+        - name: DS__VICTORIAMETRICS-PROD-ALL
           value: Prometheus
 
 downloadDashboards:
@@ -124,10 +124,10 @@ grafana.ini:
   log:
     mode: console
   server:
-    domain: 'grafana.lab.skkuding.dev'
-    root_url: 'https://grafana.lab.skkuding.dev'
+    domain: "grafana.lab.skkuding.dev"
+    root_url: "https://grafana.lab.skkuding.dev"
   users:
-    default_language: 'ko-KR'
+    default_language: "ko-KR"
     default_locale: ko
   auth.github:
     enabled: true
