@@ -23,10 +23,10 @@ configs:
             loadAllGroups: true
   rbac:
     policy.csv: |
-      # skkuding org 멤버들에게 admin 권한 부여
-      g, skkuding:members, role:admin
-    policy.default: role:readonly
-    scopes: "[groups]"
+      p, role:admin, applications, *, */*, allow
+      p, role:admin, clusters, *, *, allow
+      p, role:admin, repositories, *, *, allow
+    policy.default: role:admin
   repositories:
     lab:
       url: https://github.com/skkuding/lab
@@ -75,19 +75,19 @@ extraObjects:
     spec:
       description: "ProSeed team project"
       sourceRepos:
-        - 'https://github.com/skkuding/proseed'
-        - 'https://github.com/skkuding/proseed.git'
-        - 'https://github.com/skkuding/lab'
-        - 'https://github.com/skkuding/lab.git'
+        - "https://github.com/skkuding/proseed"
+        - "https://github.com/skkuding/proseed.git"
+        - "https://github.com/skkuding/lab"
+        - "https://github.com/skkuding/lab.git"
       destinations:
-        - namespace: 'proseed-*'
+        - namespace: "proseed-*"
           server: https://kubernetes.default.svc
-        - namespace: 'proseed'
+        - namespace: "proseed"
           server: https://kubernetes.default.svc
       clusterResourceWhitelist: []
       namespaceResourceWhitelist:
-        - group: '*'
-          kind: '*'
+        - group: "*"
+          kind: "*"
   # App of Apps - 다른 Application들을 자동으로 배포
   - apiVersion: argoproj.io/v1alpha1
     kind: Application
@@ -112,7 +112,6 @@ extraObjects:
         automated:
           prune: true
           selfHeal: true
-
 
 ## Application controller
 controller:
@@ -168,7 +167,7 @@ server:
     tls: true
     certificateName: argocd-server-tls
     servicePort: 80
-  
+
   extraArgs:
     - --insecure
 
@@ -286,7 +285,6 @@ notifications:
             **Health Status:** {{ .app.status.health.status }}
 
             [Open Preview]({{ .app.metadata.annotations.previewURL }}) | [View in Argo CD]({{ .context.argocdUrl }}/applications/{{ .app.metadata.name }})
-
 
   # -- The trigger defines the condition when the notification should be sent
   ## For more information: https://argo-cd.readthedocs.io/en/stable/operator-manual/notifications/triggers/
