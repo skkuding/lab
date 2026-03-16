@@ -37,7 +37,10 @@ spec:
         targetRevision: "{{head_sha}}"
         path: infra/k8s/web-preview
         kustomize:
-          namespace: "proseed-preview-{{number}}"
+          namespace: "proseed-preview"
+          namePrefix: "pr-{{number}}-"
+          commonLabels:
+            app: "pr-{{number}}-web-preview"
           images:
             - "ghcr.io/skkuding/proseed/web:pr-{{number}}"
           patches:
@@ -48,9 +51,16 @@ spec:
                 - op: replace
                   path: /spec/rules/0/host
                   value: "pr-{{number}}.preview.proseednow.com"
+            - target:
+                kind: Service
+                name: web-preview
+              patch: |
+                - op: replace
+                  path: /spec/selector/app
+                  value: "pr-{{number}}-web-preview"
       destination:
         server: https://kubernetes.default.svc
-        namespace: "proseed-preview-{{number}}"
+        namespace: "proseed-preview"
       syncPolicy:
         automated:
           prune: true
