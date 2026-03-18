@@ -16,6 +16,7 @@
 ## 관리 중인 앱
 
 - [ProSeed](https://github.com/skkuding/proseed)
+- [DingDong Server](https://github.com/skkuding/dingdong-server)
 
 ## 디렉토리 구조
 
