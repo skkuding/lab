@@ -4,8 +4,8 @@ metadata:
   name: dingdong-server
   namespace: argocd
   annotations:
-    argocd-image-updater.argoproj.io/image-list: server=ghcr.io/skkuding/dingdong-server
-    argocd-image-updater.argoproj.io/server.update-strategy: newest-build
+    argocd-image-updater.argoproj.io/image-list: server=ghcr.io/skkuding/dingdong-server:latest
+    argocd-image-updater.argoproj.io/server.update-strategy: digest
     argocd-image-updater.argoproj.io/write-back-method: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
