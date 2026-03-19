@@ -33,3 +33,15 @@ spec:
             secretAccessKeySecretRef:
               name: proseed-aws-credentials
               key: aws_secret_access_key
+      - selector:
+          dnsZones:
+            - "ding-dong.tv"
+        dns01:
+          route53:
+            region: ap-northeast-2
+            accessKeyIDSecretRef:
+              name: dingdong-aws-credentials
+              key: aws_access_key_id
+            secretAccessKeySecretRef:
+              name: dingdong-aws-credentials
+              key: aws_secret_access_key

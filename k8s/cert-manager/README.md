@@ -38,6 +38,7 @@ spec:
 |--------|----------|
 | `*.skkuding.dev` | skkuding |
 | `*.proseednow.com` | proseed |
+| `*.ding-dong.tv` | dingdong |
 
 ### 3. 인증서 발급 확인
 
@@ -73,3 +74,4 @@ Route53 DNS 검증을 위해 `aws-credentials` namespace의 Secret을 Reflector�
 
 - `skkuding-aws-credentials` → skkuding.dev
 - `proseed-aws-credentials` → proseednow.com
+- `dingdong-aws-credentials` → ding-dong.tv
