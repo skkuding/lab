@@ -10,7 +10,7 @@ metadata:
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
-  project: dingdong
+  project: default
   sources:
     - repoURL: https://github.com/skkuding/dingdong-server
       targetRevision: main
