@@ -7,7 +7,8 @@ AWS 자격증명을 중앙에서 관리하고 Reflector를 통해 필요한 name
 ```
 aws-credentials namespace (소스)
 ├── skkuding-aws-credentials    # skkuding AWS 계정
-└── proseed-aws-credentials     # proseed AWS 계정
+├── proseed-aws-credentials     # proseed AWS 계정
+└── dingdong-aws-credentials    # dingdong AWS 계정
 
         │ Reflector
         ▼

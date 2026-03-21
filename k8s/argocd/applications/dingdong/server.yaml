@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: dingdong-server
+  namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: server=ghcr.io/skkuding/dingdong-server:latest
+    argocd-image-updater.argoproj.io/server.update-strategy: digest
+    argocd-image-updater.argoproj.io/write-back-method: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: dingdong
+  sources:
+    - repoURL: https://github.com/skkuding/dingdong-server
+      targetRevision: main
+      path: infra/k8s
+      kustomize: {}
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: dingdong
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true

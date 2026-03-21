@@ -88,6 +88,30 @@ extraObjects:
       namespaceResourceWhitelist:
         - group: "*"
           kind: "*"
+  # AppProject - DingDong
+  # DingDong 관련 리소스의 ArgoCD Application에
+  # 반드시 spec.project: dingdong 으로 설정해야 합니다.
+  - apiVersion: argoproj.io/v1alpha1
+    kind: AppProject
+    metadata:
+      name: dingdong
+      namespace: argocd
+    spec:
+      description: "DingDong team project"
+      sourceRepos:
+        - "https://github.com/skkuding/dingdong-server"
+        - "https://github.com/skkuding/dingdong-server.git"
+        - "https://github.com/skkuding/lab"
+        - "https://github.com/skkuding/lab.git"
+      destinations:
+        - namespace: "dingdong-*"
+          server: https://kubernetes.default.svc
+        - namespace: "dingdong"
+          server: https://kubernetes.default.svc
+      clusterResourceWhitelist: []
+      namespaceResourceWhitelist:
+        - group: "*"
+          kind: "*"
   # App of Apps - 다른 Application들을 자동으로 배포
   - apiVersion: argoproj.io/v1alpha1
     kind: Application
@@ -108,10 +132,20 @@ extraObjects:
       destination:
         server: https://kubernetes.default.svc
         namespace: argocd
+      ignoreDifferences:
+        - group: argoproj.io
+          kind: Application
+          jqPathExpressions:
+            - .spec.source.kustomize.images
+            - .spec.source.helm.parameters
+            - .spec.sources[]?.kustomize.images
+            - .spec.sources[]?.helm.parameters
       syncPolicy:
         automated:
           prune: true
           selfHeal: true
+        syncOptions:
+          - RespectIgnoreDifferences=true
 
 ## Application controller
 controller:

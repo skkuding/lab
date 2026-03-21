@@ -3,5 +3,6 @@ kind: Kustomization
 
 resources:
   - namespace.yaml
+  - dingdong-aws-credentials.yaml
   - skkuding-aws-credentials.yaml
   - proseed-aws-credentials.yaml
