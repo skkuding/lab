@@ -6,11 +6,21 @@ service:
 
 resources:
   limits:
-    cpu: 200m
+    cpu: 500m # raised from 200m: usage pegged the limit under load, CFS throttling starved the HTTP server and readiness probe
     memory: 128Mi
   requests:
     cpu: 100m
     memory: 128Mi
+
+# liveness probe so a wedged Promtail self-heals; without it a hung process stays not-ready forever (readiness only removes traffic, never restarts)
+livenessProbe:
+  httpGet:
+    path: /ready
+    port: http-metrics
+  initialDelaySeconds: 60 # let a fresh pod replay its position backlog before we judge liveness
+  periodSeconds: 30
+  timeoutSeconds: 2 # more slack than readiness (1s): a liveness kill is more disruptive than dropping from endpoints
+  failureThreshold: 6 # ~3min sustained unresponsiveness before restart, avoids flapping on transient stalls
 
 # enable Promtail ServiceMonitor for Prometheus Operator
 serviceMonitor:
