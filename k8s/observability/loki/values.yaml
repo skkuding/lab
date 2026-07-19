@@ -40,6 +40,12 @@ loki:
 gateway:
   enabled: false
 
+chunksCache:
+  allocatedMemory: 4096
+
+resultsCache:
+  allocatedMemory: 512
+
 # default minio by loki chart
 # need to be replaced by custom minio(observability-minio) for centralized storage
 minio:
