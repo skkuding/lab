@@ -9,7 +9,7 @@ spec:
   project: default
   sources:
     - repoURL: https://github.com/skkuding/proseed
-      targetRevision: main
+      targetRevision: release
       path: infra/k8s/postgres
       kustomize: {}
   destination:
