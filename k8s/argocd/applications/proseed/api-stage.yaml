@@ -15,7 +15,7 @@ spec:
   sources:
     - repoURL: https://github.com/skkuding/proseed
       targetRevision: main
-      path: infra/k8s/api/overlays/stage
+      path: infra/k8s/api/overlays/staging
       kustomize: {}
   destination:
     server: https://kubernetes.default.svc
