@@ -4,8 +4,8 @@ metadata:
   name: proseed-api
   namespace: argocd
   annotations:
-    argocd-image-updater.argoproj.io/image-list: api=ghcr.io/skkuding/proseed/api:prod
-    argocd-image-updater.argoproj.io/api.update-strategy: digest
+    argocd-image-updater.argoproj.io/image-list: api=ghcr.io/skkuding/proseed/api
+    argocd-image-updater.argoproj.io/api.update-strategy: newest-build
     argocd-image-updater.argoproj.io/write-back-method: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -13,7 +13,7 @@ spec:
   project: default
   sources:
     - repoURL: https://github.com/skkuding/proseed
-      targetRevision: release
+      targetRevision: main
       path: infra/k8s/api
       kustomize: {}
   destination:
