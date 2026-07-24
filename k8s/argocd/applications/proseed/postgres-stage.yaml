@@ -12,7 +12,7 @@ spec:
   sources:
     - repoURL: https://github.com/skkuding/proseed
       targetRevision: main
-      path: infra/k8s/postgres/overlays/stage
+      path: infra/k8s/postgres/overlays/staging
       kustomize: {}
   destination:
     server: https://kubernetes.default.svc
