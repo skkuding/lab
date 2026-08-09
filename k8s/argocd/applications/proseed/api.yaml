@@ -3,10 +3,6 @@ kind: Application
 metadata:
   name: proseed-api
   namespace: argocd
-  annotations:
-    argocd-image-updater.argoproj.io/image-list: api=ghcr.io/skkuding/proseed/api
-    argocd-image-updater.argoproj.io/api.update-strategy: newest-build
-    argocd-image-updater.argoproj.io/write-back-method: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
@@ -15,14 +11,13 @@ spec:
     - repoURL: https://github.com/skkuding/proseed
       targetRevision: main
       path: infra/k8s/api
-      kustomize: {}
+      kustomize:
+        images:
+          - ghcr.io/skkuding/proseed/api:3013d61c7199fb629c1b38151629c02a3676d87b
   destination:
     server: https://kubernetes.default.svc
     namespace: proseed
   syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
