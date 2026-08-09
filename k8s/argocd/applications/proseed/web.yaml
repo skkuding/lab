@@ -3,17 +3,19 @@ kind: Application
 metadata:
   name: proseed-web
   namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: web=ghcr.io/skkuding/proseed/web:prod
+    argocd-image-updater.argoproj.io/web.update-strategy: digest
+    argocd-image-updater.argoproj.io/write-back-method: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   sources:
     - repoURL: https://github.com/skkuding/proseed
-      targetRevision: main
-      path: infra/k8s/web
-      kustomize:
-        images:
-          - ghcr.io/skkuding/proseed/web:a4342c6de786dcbdeefab9ced636943e73238d46
+      targetRevision: release
+      path: infra/k8s/web/overlays/production
+      kustomize: {}
   destination:
     server: https://kubernetes.default.svc
     namespace: proseed

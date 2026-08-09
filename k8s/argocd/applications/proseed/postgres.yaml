@@ -3,14 +3,18 @@ kind: Application
 metadata:
   name: proseed-postgres
   namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: backup=ghcr.io/skkuding/proseed/postgres-backup:prod
+    argocd-image-updater.argoproj.io/backup.update-strategy: digest
+    argocd-image-updater.argoproj.io/write-back-method: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   sources:
     - repoURL: https://github.com/skkuding/proseed
-      targetRevision: main
-      path: infra/k8s/postgres
+      targetRevision: release
+      path: infra/k8s/postgres/overlays/production
       kustomize: {}
   destination:
     server: https://kubernetes.default.svc
