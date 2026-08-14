@@ -14,12 +14,12 @@ additionalPrometheusRulesMap:
                   job_name=~"postgres-backup-.*"
                 } > 0
               )
-              and on (namespace, job_name)
+              unless on (namespace, job_name)
               (
-                time() - kube_job_status_completion_time{
+                kube_job_status_failed{
                   namespace="proseed-postgres",
                   job_name=~"postgres-backup-.*"
-                } < 600
+                } offset 10m > 0
               )
             for: 1m
             labels:
