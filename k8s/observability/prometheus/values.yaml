@@ -1,6 +1,64 @@
 grafana:
   enabled: false
 
+additionalPrometheusRulesMap:
+  proseed-postgres-backup:
+    groups:
+      - name: proseed-postgres-backup
+        rules:
+          - alert: ProseedPostgresBackupFailed
+            expr: |
+              (
+                kube_job_status_failed{
+                  namespace="proseed-postgres",
+                  job_name=~"postgres-backup-.*"
+                } > 0
+              )
+              and on (namespace, job_name)
+              (
+                time() - kube_job_status_completion_time{
+                  namespace="proseed-postgres",
+                  job_name=~"postgres-backup-.*"
+                } < 600
+              )
+            for: 1m
+            labels:
+              severity: critical
+              service: proseed
+              component: postgres-backup
+            annotations:
+              summary: ProSeed PostgreSQL backup failed
+              description: >-
+                Backup Job {{ $labels.job_name }} failed in namespace
+                {{ $labels.namespace }}. Check the Job logs and the S3 upload result.
+
+alertmanager:
+  config:
+    global:
+      resolve_timeout: 5m
+    route:
+      group_by:
+        - alertname
+        - namespace
+        - job_name
+      group_wait: 30s
+      group_interval: 5m
+      repeat_interval: 1h
+      receiver: 'null'
+      routes:
+        - receiver: proseed-discord
+          matchers:
+            - alertname="ProseedPostgresBackupFailed"
+    receivers:
+      - name: 'null'
+      - name: proseed-discord
+        discord_configs:
+          - send_resolved: false
+            webhook_url_file: /etc/alertmanager/secrets/proseed-discord-webhook/webhook-url
+  alertmanagerSpec:
+    secrets:
+      - proseed-discord-webhook
+
 prometheus:
   ingress:
     enabled: true
