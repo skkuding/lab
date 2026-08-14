@@ -29,39 +29,3 @@ Grafana is not only for prometheus but also for other data sources, including Lo
 kube-prometheus-stack discovers targets by looking for a CRD(Custom Resource Definition), ServiceMonitors in the cluster.
 ServiceMonitors inside the kubernetes cluster are deployed by helm chart of kube-prometheus-stack.
 However in case of OTel Collector, which we defined through the OpenTelemetryCollector CRD, we need to create a ServiceMonitor manually to enable scraping because it is not automatically discovered by kube-prometheus-stack.
-
-## ProSeed PostgreSQL backup failure alert
-
-`ProseedPostgresBackupFailed` detects a failed `postgres-backup-*` Job in the
-`proseed-postgres` namespace and sends the alert to Discord through
-Alertmanager. The rule only considers failures completed during the last 24
-hours, so retained historical Job objects do not keep sending stale alerts.
-
-### Create the Discord webhook Secret
-
-The webhook URL must never be committed to Git. Create the Secret before
-merging or syncing the Prometheus change because Alertmanager mounts it at
-startup.
-
-```bash
-read -rs "DISCORD_WEBHOOK_URL?Discord webhook URL: "
-printf %s "${DISCORD_WEBHOOK_URL}" | \
-  kubectl --context lab -n observability create secret generic proseed-discord-webhook \
-    --from-file=webhook-url=/dev/stdin \
-    --dry-run=client -o yaml | \
-  kubectl --context lab apply -f -
-unset DISCORD_WEBHOOK_URL
-```
-
-### Test the notification
-
-Create a disposable failed Job after Prometheus and Alertmanager are healthy.
-It should produce one Discord notification after about 1-2 minutes.
-
-```bash
-kubectl --context lab -n proseed-postgres create job postgres-backup-alert-test \
-  --image=busybox:1.36 -- /bin/sh -c 'exit 1'
-
-kubectl --context lab -n proseed-postgres get job postgres-backup-alert-test
-kubectl --context lab -n proseed-postgres delete job postgres-backup-alert-test
-```
