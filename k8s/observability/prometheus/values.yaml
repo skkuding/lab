@@ -45,19 +45,42 @@ alertmanager:
       group_interval: 5m
       repeat_interval: 1h
       receiver: 'null'
-      routes:
-        - receiver: proseed-discord
-          matchers:
-            - alertname="ProseedPostgresBackupFailed"
     receivers:
       - name: 'null'
-      - name: proseed-discord
-        discord_configs:
-          - send_resolved: false
-            webhook_url_file: /etc/alertmanager/secrets/proseed-discord-webhook/webhook-url
   alertmanagerSpec:
-    secrets:
-      - proseed-discord-webhook
+    alertmanagerConfigMatcherStrategy:
+      type: None
+
+extraManifests:
+  - apiVersion: monitoring.coreos.com/v1alpha1
+    kind: AlertmanagerConfig
+    metadata:
+      name: proseed-discord
+      namespace: observability
+    spec:
+      route:
+        receiver: proseed-discord
+        groupBy:
+          - alertname
+          - namespace
+          - job_name
+        groupWait: 30s
+        groupInterval: 5m
+        repeatInterval: 1h
+        matchers:
+          - name: alertname
+            value: ProseedPostgresBackupFailed
+            matchType: =
+          - name: namespace
+            value: proseed-postgres
+            matchType: =
+      receivers:
+        - name: proseed-discord
+          discordConfigs:
+            - apiURL:
+                name: proseed-discord-webhook
+                key: webhook-url
+              sendResolved: false
 
 prometheus:
   ingress:
